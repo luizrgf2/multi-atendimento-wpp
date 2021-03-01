@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 const React = require('react')
-const {View,KeyboardAvoidingView,TouchableOpacity,Text,TextInput,Animated,ImageBackground,Image,Alert} = require('react-native')
+const {View,KeyboardAvoidingView,TouchableOpacity,Text,TextInput,Animated,ImageBackground,Image,Alert, Platform} = require('react-native')
 const styles = require('./styles').default
 const styles_default = require('../../styles/styles_default').default
 const Register = require('../../services/api').Register
@@ -49,7 +49,14 @@ const Form = ()=>{
                         <TouchableOpacity style={styles_default.button} onPress={async () => {
                             
                             const responsa = await Register(email,senha)
-                            Alert.alert('Alerta',responsa)
+                            if(Platform.OS === 'web'){
+
+                                alert(responsa)
+                            }
+                            else{
+                                Alert.alert('Alerta',responsa)
+
+                            }
                             
                         }}>
                             <Text style={styles_default.text_button}>Registrar</Text>

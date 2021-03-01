@@ -1,22 +1,19 @@
-const {createBottomTabNavigator} = require('@react-navigation/bottom-tabs')
-const {NavigationContainer} = require('@react-navigation/native')
-
-const Tab = createBottomTabNavigator()
+const {StyleSheet} = require('react-native')
 
 
-const app =()=>{
-
-    return(
 
 
-        <NavigationContainer>
-            <Tab.Navigator>
-                <Tab.Screen name='Financeiro'></Tab.Screen>
-            </Tab.Navigator>
-        </NavigationContainer>
+
+const styles = StyleSheet.create({
 
 
-    )
+    item:{
+        flexDirection:'row',
+        alignItems:'flex-start',
+        backgroundColor:'#606361'
+    }
 
 
-}
+})
+
+export default styles

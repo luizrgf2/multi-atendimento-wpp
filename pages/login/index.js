@@ -1,13 +1,36 @@
-import { useRef, useState } from 'react'
+import { useRef, useState  } from 'react'
 
 const React = require('react')
-const {View,Text,Button,TouchableOpacity,Animated,KeyboardAvoidingView,Keyboard,TextInput,Image, Alert} = require('react-native')
+const {View,Text,Button,TouchableOpacity,Animated,KeyboardAvoidingView,Keyboard,TextInput,Image, Alert, Platform} = require('react-native')
 const styles = require('./styles').styles
 const styles_default = require('../../styles/styles_default').default
 const Auth = require('../../services/api').Auth
 const {CommonActions} = require('@react-navigation/native')
+const  AsyncStorage = require('@react-native-async-storage/async-storage').default
+
+const storedata = async  value=>{
+
+    try{
+        await AsyncStorage.setItem('token',value)
+        return 'Sucesso'
+    }catch(e){
+        return e
+    }
+
+}
+const readdata = async ()=>{
+    try{
+        let data = await AsyncStorage.getItem('token')
+
+        if(!data) return 'Não a dados para ler'
+
+        return data
 
 
+    }catch{
+        return 'Erro ler'
+    }
+}
 
 const Form = ({navigation})=>{
 
@@ -59,11 +82,22 @@ const Form = ({navigation})=>{
                         
 
                         
-                        Alert.alert('Atenção',response[0])
+                        if(Platform.OS === 'web'){
+                            alert(response[0].message)
+                        }
+                        else{
+                            Alert.alert('Atenção',response[0].message)
 
+                        }
 
-
+                        
+                        
                         if(response[1] === 200){
+
+                            
+                            
+                            await storedata(response[0].token)
+
                             navigation.navigate('Home')
                             let Action = CommonActions.reset({
                                 index:0,
