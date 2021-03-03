@@ -1,12 +1,20 @@
 import { useState } from 'react'
 
-const {FlatList,View,Image,Text} = require('react-native')
+const {FlatList,View,Image,Text,TouchableOpacity} = require('react-native')
 const React =require('react')
 const {createBottomTabNavigator} = require('@react-navigation/bottom-tabs')
 const {NavigationContainer,CommonActions} = require('@react-navigation/native')
 const api = require('../../services/api')
 const styles = require('./styles').default
 const AsyncStorage = require('@react-native-async-storage/async-storage').default
+const io = require('socket.io-client')
+const socket = io('http://f2670d2e176a.ngrok.io',{
+    reconnectionDelayMax:10000,
+    reconnection:true,
+    reconnectionAttempts:Infinity
+})
+
+
 
 
 const readdata = async ()=>{
@@ -25,13 +33,17 @@ const readdata = async ()=>{
 
 
 
-const Item = ()=>{
+const Item = (props)=>{
 
         return(
             <View style={[styles.item]}>
-                <Image source={require('../../assets/user.png')}>
+                <Image source={require('../../assets/user.png')} style={styles.user_logo}>
 
                 </Image>
+
+                <Text style={[styles.text_item]}>
+                    {props.text}
+                </Text>
             </View>
         )
 
@@ -49,7 +61,7 @@ function Lista(){
     
     readdata().then(v=>{
 
-        fetch('http://db0fd1e5ceec.ngrok.io/auth/clientes',
+        fetch('http://f2670d2e176a.ngrok.io/auth/clientes',
         {
             headers:{
                 'authorization':v
@@ -62,18 +74,34 @@ function Lista(){
         ).then(res=>res.json()).then(res=>{
 
 
-            setData(res)
-            console.log(res)
             
+            setTimeout(()=>{
+                setData(res)
+                console.log(res)
+                
+            },3000)
+
         })
+
+
 
     })
     
+            
+    socket.on('change',change=>{
+
+        setData(change)
+
+    })
 
     const renderItem = ({item})=>{
 
         return(
-        <Text>{item.red}</Text>
+
+            <TouchableOpacity onPress={()=>{}}>
+                <Item text={item.red}></Item>
+            </TouchableOpacity>
+
         )
 
     }
@@ -83,14 +111,12 @@ function Lista(){
     return(
 
 
-        <View>
 
 
-            <FlatList data={data} renderItem={renderItem}>
+            <FlatList data={data} renderItem={renderItem} >
 
             </FlatList>
 
-        </View>
 
 
     )
@@ -107,7 +133,7 @@ const App =()=>{
 
     return(
 
-        <View>
+        <View style={styles.container_pricipal}>
             <Lista>
 
             </Lista>
