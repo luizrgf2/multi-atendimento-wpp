@@ -1,6 +1,6 @@
 
 const React = require('react')
-const App = require('./routes').default
+const App = require('./pages/chat/index').default
 
 
 
