@@ -3,12 +3,12 @@ import { useState } from 'react'
 const {FlatList,View,Image,Text,TouchableOpacity} = require('react-native')
 const React =require('react')
 const {createBottomTabNavigator} = require('@react-navigation/bottom-tabs')
-const {NavigationContainer,CommonActions} = require('@react-navigation/native')
+const {NavigationContainer,StackActions} = require('@react-navigation/native')
 const api = require('../../services/api')
 const styles = require('./styles').default
 const AsyncStorage = require('@react-native-async-storage/async-storage').default
 const io = require('socket.io-client')
-const socket = io('http://f2670d2e176a.ngrok.io',{
+const socket = io('http://bdbd19a90107.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -52,7 +52,7 @@ const Item = (props)=>{
 
 
 
-function Lista(){
+function Lista(props){
 
     
 
@@ -61,7 +61,7 @@ function Lista(){
     
     readdata().then(v=>{
 
-        fetch('http://f2670d2e176a.ngrok.io/auth/clientes',
+        fetch('http://bdbd19a90107.ngrok.io/auth/clientes',
         {
             headers:{
                 'authorization':v
@@ -98,7 +98,15 @@ function Lista(){
 
         return(
 
-            <TouchableOpacity onPress={()=>{}}>
+            <TouchableOpacity onPress={()=>{
+
+
+                let Action = StackActions.push('Chat',item)
+                props.nav.dispatch(Action)
+
+
+
+            }}>
                 <Item text={item.red}></Item>
             </TouchableOpacity>
 
@@ -127,14 +135,14 @@ function Lista(){
 
 
 
-const App =()=>{
+const App =({navigation})=>{
 
 
 
     return(
 
         <View style={styles.container_pricipal}>
-            <Lista>
+            <Lista nav={navigation}>
 
             </Lista>
         </View>
