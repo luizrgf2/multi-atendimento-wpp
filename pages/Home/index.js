@@ -8,7 +8,7 @@ const api = require('../../services/api')
 const styles = require('./styles').default
 const AsyncStorage = require('@react-native-async-storage/async-storage').default
 const io = require('socket.io-client')
-const socket = io('http://bdbd19a90107.ngrok.io',{
+const socket = io('http://8a650067c63b.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -30,9 +30,6 @@ const readdata = async ()=>{
         return 'Erro ler'
     }
 }
-
-
-
 const Item = (props)=>{
 
         return(
@@ -41,51 +38,54 @@ const Item = (props)=>{
 
                 </Image>
 
-                <Text style={[styles.text_item]}>
-                    {props.text}
-                </Text>
+                <View>
+                    <Text style={[styles.text_item]}>
+                        {props.text}
+                    </Text>
+                    <Text style={[styles.text_nome]}>
+                        {props.nome}
+                    </Text>
+                </View>
             </View>
         )
 
 
 }
-
-
-
 function Lista(props){
 
-    
+    let update = 0
 
     const[data,setData] = useState([{red:''}])
 
     
-    readdata().then(v=>{
-
-        fetch('http://bdbd19a90107.ngrok.io/auth/clientes',
-        {
-            headers:{
-                'authorization':v
-
-            },
-            method:'GET'
-        }
-            
-
-        ).then(res=>res.json()).then(res=>{
-
-
-            
-            setTimeout(()=>{
-                setData(res)
-                console.log(res)
-                
-            },3000)
-
-        })
-
-
-
-    })
+    if(update == 0){
+            update = 1
+        
+            readdata().then(v=>{
+        
+                fetch('http://8a650067c63b.ngrok.io/auth/clientes',
+                {
+                    headers:{
+                        'authorization':v
+        
+                    },
+                    method:'GET'
+                }
+                    
+        
+                ).then(res=>res.json()).then(res=>{
+        
+        
+                    
+                    setData(res)
+                        
+                    console.log(res)
+                })
+        
+        
+        
+            })
+    }
     
             
     socket.on('change',change=>{
@@ -100,14 +100,15 @@ function Lista(props){
 
             <TouchableOpacity onPress={()=>{
 
-
-                let Action = StackActions.push('Chat',item)
-                props.nav.dispatch(Action)
-
-
+                props.nav.navigate('Chat',{
+                    conversas:item.conversas,
+                    userid:item.userid,
+                    nome:item.nome,
+                    red:item.red
+                })
 
             }}>
-                <Item text={item.red}></Item>
+                <Item text={item.red} nome={item.nome}></Item>
             </TouchableOpacity>
 
         )

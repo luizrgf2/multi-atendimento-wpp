@@ -30,6 +30,10 @@ const styles = StyleSheet.create({
     user_logo:{
         width: x*0.2,
         height:y*0.1
+    },text_nome:{
+
+        color:'#fff',
+
     }
 
 
