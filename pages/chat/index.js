@@ -46,7 +46,7 @@ const App = ({route,navigation})=>{
 
     const {conversas,userid,nome,red} = route.params
     
-    navigation.setParams({title:'oi'})
+    navigation.setOptions({title:nome+'-'+red})
 
     return(
         <View style={[style.constainer_principal]}>
