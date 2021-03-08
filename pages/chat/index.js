@@ -1,5 +1,5 @@
 const React = require('react');
-const {Text,TouchableOpacity,Image,TextInput,FlatList,View} = require('react-native')
+const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('react-native')
 const style = require('./styles').default
 
 
@@ -23,16 +23,20 @@ const Chat = ()=>{
 
 
 }
-const TextIn = ()=>{
+const TextIn = (props)=>{
 
     return(
         <View style={[style.container_input]}>
             <TextInput placeholder='Mensagem' style={[style.input_modificado]}> 
 
             </TextInput>
-            <Image source={require('../../assets/send.png')} style={[style.button_image]}>
-                
-            </Image>
+            <TouchableOpacity onPress={()=>{
+
+               Alert.alert(props.red,props.nome)
+
+            }}>
+                <Image source={require('../../assets/send.png')} style={[style.button_image]}></Image>
+            </TouchableOpacity>
         </View>
     )
 
@@ -41,15 +45,13 @@ const App = ({route,navigation})=>{
 
 
     const {conversas,userid,nome,red} = route.params
-
-    navigation.setParams({
-        title:nome+'||'+red
-    })
+    
+    navigation.setParams({title:'oi'})
 
     return(
         <View style={[style.constainer_principal]}>
             <Chat></Chat>
-            <TextIn></TextIn>
+            <TextIn nome={nome} red={red}></TextIn>
         </View>
     )
 

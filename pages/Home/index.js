@@ -8,7 +8,7 @@ const api = require('../../services/api')
 const styles = require('./styles').default
 const AsyncStorage = require('@react-native-async-storage/async-storage').default
 const io = require('socket.io-client')
-const socket = io('http://8a650067c63b.ngrok.io',{
+const socket = io('http://5d9dc2b9d06e.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -51,9 +51,9 @@ const Item = (props)=>{
 
 
 }
+var update = 0
 function Lista(props){
 
-    let update = 0
 
     const[data,setData] = useState([{red:''}])
 
@@ -62,27 +62,12 @@ function Lista(props){
             update = 1
         
             readdata().then(v=>{
-        
-                fetch('http://8a650067c63b.ngrok.io/auth/clientes',
-                {
-                    headers:{
-                        'authorization':v
-        
-                    },
-                    method:'GET'
-                }
-                    
-        
-                ).then(res=>res.json()).then(res=>{
-        
-        
-                    
-                    setData(res)
-                        
-                    console.log(res)
-                })
-        
-        
+                
+                api.clientes(v).then(value=>[
+
+                    setData(value)
+
+                ])
         
             })
     }
@@ -101,7 +86,7 @@ function Lista(props){
             <TouchableOpacity onPress={()=>{
 
                 props.nav.navigate('Chat',{
-                    conversas:item.conversas,
+                    conversas:[],
                     userid:item.userid,
                     nome:item.nome,
                     red:item.red
@@ -132,9 +117,6 @@ function Lista(props){
 
 
 }
-
-
-
 
 const App =({navigation})=>{
 
