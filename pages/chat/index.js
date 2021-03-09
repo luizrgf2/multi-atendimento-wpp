@@ -1,7 +1,12 @@
 const React = require('react');
 const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('react-native')
 const style = require('./styles').default
-
+const io = require('socket.io-client')
+const socket = io('http://cf4e4ed5c5a6.ngrok.io',{
+    reconnectionDelayMax:10000,
+    reconnection:true,
+    reconnectionAttempts:Infinity
+})
 
 const Chat = ()=>{
 

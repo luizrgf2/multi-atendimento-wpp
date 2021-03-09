@@ -1,7 +1,7 @@
 const {create} = require('apisauce')
 
 
-var base_url = 'http://5d9dc2b9d06e.ngrok.io'
+var base_url = 'http://cf4e4ed5c5a6.ngrok.io'
 
 
 async function Register(email,senha){
@@ -51,4 +51,17 @@ async function clientes(authorization){
     return response.data
 
 }
+async function mensagem(authorization,userid){
+    const api =  create({
+        baseURL:base_url,
+        headers:{
+            'Content-Type':'application/json',
+            'authorization':authorization
+        }
+    })
+
+    const response = await api.get('auth/mensagens/'+userid)
+    return response.data
+}
+
 module.exports = {Register,Auth,clientes}
