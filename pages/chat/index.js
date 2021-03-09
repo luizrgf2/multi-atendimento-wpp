@@ -1,24 +1,75 @@
+import { useState } from 'react';
+const AsyncStorage = require('@react-native-async-storage/async-storage').default
 const React = require('react');
 const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('react-native')
 const style = require('./styles').default
 const io = require('socket.io-client')
-const socket = io('http://cf4e4ed5c5a6.ngrok.io',{
+const socket = io('http://357ee1dad8fe.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
 })
+const api = require('../../services/api')
 
-const Chat = ()=>{
+const readdata = async ()=>{
+    try{
+        let data = await AsyncStorage.getItem('token')
+
+        if(!data) return 'Não a dados para ler'
+
+        return data
 
 
+    }catch(e){
+        return e
+    }
+}
+var update = 0
+const Chat = (props)=>{
+
+    const [data,setData] = useState({message:[]})
+
+
+
+    socket.on('msg',c=>{
+        if(c.userid == props.userid){
+
+            setData(c.message)
+            console.log(c.message)
+        }
+
+    })
+
+
+    if(update ==0){
+        readdata().then(v=>{
+            console.log(v)
+            api.mensagem(v,props.userid).then(value=>{
     
+                
+                setData(value.message)
+                update=1
+        })
+    
+        })
+    }
+
+    const renderitem=({item})=>{
 
 
+        return(
+            <Text style={{color:'#FFF'}}>
+                {item}
+            </Text>
+        )
+
+
+    }
 
     return(
 
         <View style={[style.container_chat]}>
-            <FlatList>
+            <FlatList data={data} renderItem={renderitem}>
             
             </FlatList>
         </View>
@@ -55,7 +106,7 @@ const App = ({route,navigation})=>{
 
     return(
         <View style={[style.constainer_principal]}>
-            <Chat></Chat>
+            <Chat userid={userid}></Chat>
             <TextIn nome={nome} red={red}></TextIn>
         </View>
     )
