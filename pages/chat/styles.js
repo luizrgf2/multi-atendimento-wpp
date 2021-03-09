@@ -19,7 +19,8 @@ const style = StyleSheet.create({
     },
     container_chat:{
         flex:1,
-        backgroundColor:"#000"
+        backgroundColor:"#000",
+        alignItems:'center'
     },
     container_input:{
         flexDirection:'row'
@@ -29,6 +30,15 @@ const style = StyleSheet.create({
         height:y*0.08,
         marginLeft:x*0.02
         
+    },
+    container_message:{
+
+        width:x*0.9,
+        marginTop:y*0.03
+    },
+    text_size:{
+        fontWeight:'bold',
+        fontSize:(y-x)*0.08
     }
 
 

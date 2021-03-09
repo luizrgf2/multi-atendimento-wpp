@@ -1,4 +1,5 @@
 import { useRef, useState  } from 'react'
+import { Verificardor } from '../../services/api'
 
 const React = require('react')
 const {View,Text,Button,TouchableOpacity,Animated,KeyboardAvoidingView,Keyboard,TextInput,Image, Alert, Platform} = require('react-native')
@@ -31,7 +32,7 @@ const readdata = async ()=>{
         return 'Erro ler'
     }
 }
-
+let update = 0
 const Form = ({navigation})=>{
 
 
@@ -64,6 +65,20 @@ const Form = ({navigation})=>{
 
     ).start()
 
+    if(update == 0){
+        update = 1
+        readdata().then(v=>{
+            Verificardor(v).then(value=>{
+    
+                if(value == true){
+                    let action = StackActions.replace('Home')
+                    navigation.dispatch(action)
+                    Alert.alert('Atenção','Reconexão feita com sucesso!')
+                }
+    
+            })
+        })
+    }
 
     return(
 

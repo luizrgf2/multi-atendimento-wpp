@@ -4,12 +4,17 @@ const React = require('react');
 const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('react-native')
 const style = require('./styles').default
 const io = require('socket.io-client')
-const socket = io('http://357ee1dad8fe.ngrok.io',{
+const socket = io('http://30d3b8bfdb29.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
 })
 const api = require('../../services/api')
+
+
+
+
+
 
 const readdata = async ()=>{
     try{
@@ -28,10 +33,12 @@ var update = 0
 const Chat = (props)=>{
 
     const [data,setData] = useState({message:[]})
+    var texto = undefined // variavel vai gauradar o texto da mensagem
+    var comparador = false // variavel responsavel por comparar uma mensagem se e do cliete ou se é do app
 
 
-
-    socket.on('msg',c=>{
+    socket.on('msg',c=>{ // verifica se a nova mensagens eviadas pelo cliete
+        console.log('oi')
         if(c.userid == props.userid){
 
             setData(c.message)
@@ -41,8 +48,8 @@ const Chat = (props)=>{
     })
 
 
-    if(update ==0){
-        readdata().then(v=>{
+    if(update == 0){
+        readdata().then(v=>{ // pega o token guardado dentro do app para fazer a requisiçao inicial e pegar as mensagens
             console.log(v)
             api.mensagem(v,props.userid).then(value=>{
     
@@ -54,13 +61,31 @@ const Chat = (props)=>{
         })
     }
 
-    const renderitem=({item})=>{
+    const renderitem=({item})=>{ //componente responsavel por renderizar a mesagem na tela
+
+        let estado = 'flex-start'
+        let color = '#00c2ff'
+
+        texto = item.client //vai tentar pegar uma mensagem enviada pelo cliente
+        estado = 'flex-start'
+        
+        if(!texto){
+ 
+            texto = item.app // vai tentar pegar uam mensagem enviada pelo atendente ressrce direto do app
+            estado = 'flex-end'
+            color = '#fc0335'
+            
+        }
+        
+        
 
 
         return(
-            <Text style={{color:'#FFF'}}>
-                {item}
-            </Text>
+            <View style={[style.container_message,{alignItems:estado}]}>
+                <Text style={[style.text_size,{color:color}]}>
+                    {texto}
+                </Text>
+            </View>
         )
 
 
@@ -81,14 +106,22 @@ const Chat = (props)=>{
 }
 const TextIn = (props)=>{
 
+
+    const [text,setText] = useState('')
+
     return(
         <View style={[style.container_input]}>
-            <TextInput placeholder='Mensagem' style={[style.input_modificado]}> 
+            <TextInput placeholder='Mensagem' style={[style.input_modificado]} onChangeText={v=>setText(v)}> 
 
             </TextInput>
-            <TouchableOpacity onPress={()=>{
+            <TouchableOpacity onPress={async()=>{
 
-               Alert.alert(props.red,props.nome)
+                const token = await readdata()
+
+                let teste = await api.salvar_msg(token,props.userid,text)
+
+                console.log(teste)
+
 
             }}>
                 <Image source={require('../../assets/send.png')} style={[style.button_image]}></Image>
@@ -107,7 +140,7 @@ const App = ({route,navigation})=>{
     return(
         <View style={[style.constainer_principal]}>
             <Chat userid={userid}></Chat>
-            <TextIn nome={nome} red={red}></TextIn>
+            <TextIn userid={userid} ></TextIn>
         </View>
     )
 

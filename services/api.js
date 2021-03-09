@@ -1,10 +1,10 @@
 const {create} = require('apisauce')
 
 
-var base_url = 'http://357ee1dad8fe.ngrok.io/'
+var base_url = 'http://30d3b8bfdb29.ngrok.io'
 
 
-async function Register(email,senha){
+async function Register(email,senha,area){
 
     
 
@@ -13,7 +13,7 @@ async function Register(email,senha){
         baseURL:base_url,
     })
     
-    const response = await api.post('/auth/register',{email:email,password:senha})
+    const response = await api.post('/auth/register',{email:email,password:senha,area:area})
     
     return response.data.message
     
@@ -63,5 +63,29 @@ async function mensagem(authorization,userid){
     const response = await api.get('auth/mensagens/'+userid)
     return response.data
 }
+async function salvar_msg(authorization,userid,msg){
+    const api =  create({
+        baseURL:base_url,
+        headers:{
+            'Content-Type':'application/json',
+            'authorization':authorization
+        }
+    })
 
-module.exports = {Register,Auth,clientes,mensagem}
+    const response = await api.post('auth/salvarmsg/',{userid:userid,msg:msg})
+    return response.data
+}
+async function Verificardor(authorization){
+    const api =  create({
+        baseURL:base_url,
+        headers:{
+            'Content-Type':'application/json',
+            'authorization':authorization
+        }
+    })
+
+    const response = await api.get('auth/verificar/')
+    return response.data
+}
+
+module.exports = {Register,Auth,clientes,mensagem,salvar_msg,Verificardor}
