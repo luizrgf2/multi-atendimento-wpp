@@ -1,7 +1,7 @@
 const {create} = require('apisauce')
 
 
-var base_url = 'http://628b97256d19.ngrok.io'
+var base_url = 'http://c75fc34afabf.ngrok.io'
 
 
 async function Register(email,senha,area){

@@ -4,7 +4,7 @@ const React = require('react');
 const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('react-native')
 const style = require('./styles').default
 const io = require('socket.io-client')
-const socket = io('http://628b97256d19.ngrok.io',{
+const socket = io('http://c75fc34afabf.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -135,6 +135,8 @@ const App = ({route,navigation})=>{
 
     const {conversas,userid,nome,red} = route.params
     
+    update =0
+
     navigation.setOptions({title:nome+'-'+red})
 
     return(
