@@ -32,7 +32,6 @@ const readdata = async ()=>{
         return 'Erro ler'
     }
 }
-let update = 0
 const Form = ({navigation})=>{
 
 
@@ -65,20 +64,7 @@ const Form = ({navigation})=>{
 
     ).start()
 
-    if(update == 0){
-        update = 1
-        readdata().then(v=>{
-            Verificardor(v).then(value=>{
-    
-                if(value == true){
-                    let action = StackActions.replace('Home')
-                    navigation.dispatch(action)
-                    Alert.alert('Atenção','Reconexão feita com sucesso!')
-                }
-    
-            })
-        })
-    }
+
 
     return(
 
@@ -113,7 +99,7 @@ const Form = ({navigation})=>{
                             
                             await storedata(response[0].token)
 
-                            let Action = StackActions.replace('Home')
+                            let Action = StackActions.replace('Home',response[0].user.area)
                         
                             navigation.dispatch(Action)
                         }

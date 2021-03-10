@@ -14,6 +14,7 @@ const Form = ()=>{
     const opacidade = useRef(new Animated.Value(0)).current
     const [email,setEmail] = useState('')
     const [senha,setSenha] = useState('')
+    const [area,setArea] = useState('')
 
     Animated.parallel([
         Animated.spring(mov_x,{
@@ -45,10 +46,11 @@ const Form = ()=>{
                     
                     <Animated.Image source = {require('../../assets/register.png')} style={[styles.container_image,{opacity:opacidade}]}></Animated.Image>
                     <TextInput placeholder='E-mail' autoCorrect={false} style={[styles_default.input,{marginTop:1}]} onChangeText={value=>setEmail(value)}></TextInput>
-                    <TextInput placeholder='senha' autoCorrect={false} style={[styles_default.input,{marginTop:1}]} secureTextEntry={true} onChangeText={value=>setSenha(value)}></TextInput>
-                        <TouchableOpacity style={styles_default.button} onPress={async () => {
+                    <TextInput placeholder='Senha' autoCorrect={false} style={[styles_default.input,{marginTop:1}]} secureTextEntry={true} onChangeText={value=>setSenha(value)}></TextInput>
+                    <TextInput placeholder='Area' autoCorrect={false} style={[styles_default.input,{marginTop:1}]}  onChangeText={value=>setArea(value)}></TextInput>
+                    <TouchableOpacity style={styles_default.button} onPress={async () => {
                             
-                            const responsa = await Register(email,senha)
+                            const responsa = await Register(email,senha,area)
                             if(Platform.OS === 'web'){
 
                                 alert(responsa)

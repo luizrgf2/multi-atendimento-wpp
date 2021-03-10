@@ -8,7 +8,7 @@ const api = require('../../services/api')
 const styles = require('./styles').default
 const AsyncStorage = require('@react-native-async-storage/async-storage').default
 const io = require('socket.io-client')
-const socket = io('http://30d3b8bfdb29.ngrok.io',{
+const socket = io('http://628b97256d19.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -55,10 +55,20 @@ var update = 0
 function Lista(props){
 
 
-    const[data,setData] = useState([{red:''}])
+    const[data,setData] = useState([{red:''}]) // estao da aplicaçao
 
+
+    const filtroDedados=(value)=>{
+
+
+        if(value.area === props.area){
+            return value
+        }
     
-    if(update == 0){
+    
+    }
+    
+    if(update == 0){ //limitador de requisiçao
             update = 1
         
             readdata().then(v=>{
@@ -73,13 +83,13 @@ function Lista(props){
     }
     
             
-    socket.on('change',change=>{
+    socket.on('change',change=>{ //espera uma mudaça acontecer nos redirecionamentos
 
         setData(change)
 
     })
 
-    const renderItem = ({item})=>{
+    const renderItem = ({item})=>{ // item a ser renderizado pela flat list
 
         return(
 
@@ -101,13 +111,14 @@ function Lista(props){
     }
 
 
+    var novos_dados = data.filter(filtroDedados)
 
     return(
 
 
 
 
-            <FlatList data={data} renderItem={renderItem} >
+            <FlatList data={novos_dados} renderItem={renderItem} >
 
             </FlatList>
 
@@ -118,14 +129,17 @@ function Lista(props){
 
 }
 
-const App =({navigation})=>{
+const App =({route,navigation})=>{
 
 
+    
+    const area_atuacao = route.params
+    navigation.setOptions({title:area_atuacao})
 
     return(
 
         <View style={styles.container_pricipal}>
-            <Lista nav={navigation}>
+            <Lista nav={navigation} area={area_atuacao}>
 
             </Lista>
         </View>

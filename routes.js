@@ -15,8 +15,8 @@ const App = ()=>{
             <Stack.Navigator initialRouteName='Login'>
                 <Stack.Screen name='Login' component={Login} options={{title:'Tela Login',headerStyle:{backgroundColor:'#00c2ff'}}}></Stack.Screen>
                 <Stack.Screen name='Register' component={Register} options={{title:'Tela de registro' , headerStyle:{backgroundColor:'#00c2ff'}}}></Stack.Screen>
-                <Stack.Screen name='Home' component={Home} options={{title:'Tela Home' , headerStyle:{backgroundColor:'#00c2ff'},headerLeft:false}}></Stack.Screen>
-                <Stack.Screen name='Chat' component={Chat} options={{headerStyle:{backgroundColor:'#00c2ff'},headerLeft:false}}></Stack.Screen>
+                <Stack.Screen name='Home' component={Home} options={{headerStyle:{backgroundColor:'#00c2ff'},headerLeft:false}}></Stack.Screen>
+                <Stack.Screen name='Chat' component={Chat} options={{headerStyle:{backgroundColor:'#00c2ff'}}}></Stack.Screen>
             </Stack.Navigator>
 
         </NavigationContainer>
