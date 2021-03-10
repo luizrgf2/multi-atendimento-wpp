@@ -1,11 +1,12 @@
 import { useRef, useState  } from 'react'
+import { Verificardor } from '../../services/api'
 
 const React = require('react')
 const {View,Text,Button,TouchableOpacity,Animated,KeyboardAvoidingView,Keyboard,TextInput,Image, Alert, Platform} = require('react-native')
 const styles = require('./styles').styles
 const styles_default = require('../../styles/styles_default').default
 const Auth = require('../../services/api').Auth
-const {CommonActions} = require('@react-navigation/native')
+const {CommonActions,StackActions} = require('@react-navigation/native')
 const  AsyncStorage = require('@react-native-async-storage/async-storage').default
 
 const storedata = async  value=>{
@@ -31,7 +32,6 @@ const readdata = async ()=>{
         return 'Erro ler'
     }
 }
-
 const Form = ({navigation})=>{
 
 
@@ -63,6 +63,7 @@ const Form = ({navigation})=>{
         ]
 
     ).start()
+
 
 
     return(
@@ -98,14 +99,7 @@ const Form = ({navigation})=>{
                             
                             await storedata(response[0].token)
 
-                            navigation.navigate('Home')
-                            let Action = CommonActions.reset({
-                                index:0,
-                                routes:[
-                                    {name:'Home'}
-                                ],
-                                
-                            })
+                            let Action = StackActions.replace('Home',response[0].user.area)
                         
                             navigation.dispatch(Action)
                         }
