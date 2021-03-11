@@ -5,7 +5,7 @@ const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('rea
 const style = require('./styles').default
 const io = require('socket.io-client')
 const {StackActions} = require('@react-navigation/native')
-const socket = io('http://d3cfcba8c935.ngrok.io',{
+const socket = io('http://34.95.217.130',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -47,8 +47,26 @@ const Chat = (props)=>{
         console.log('oi')
         if(c.userid == props.userid){
 
-            setData(c.message)
-            console.log(c.message)
+
+            console.log('props.messagee')
+
+
+            let lista_mensagens = []
+                
+            for(let i = 0;i<props.messagee.length;i++){
+
+                lista_mensagens.push({client:props.messagee[i]})
+
+            }
+            
+            for(let i = 0;i<c.message.length;i++){
+
+                lista_mensagens.push(c.message[i])
+
+            }
+
+
+            setData(lista_mensagens)
         }
 
     })
@@ -56,11 +74,26 @@ const Chat = (props)=>{
 
     if(update == 0){
         readdata().then(v=>{ // pega o token guardado dentro do app para fazer a requisiçao inicial e pegar as mensagens
-            console.log(v)
             api.mensagem(v,props.userid).then(value=>{
-    
                 
-                setData(value.message)
+                let lista_mensagens = []
+                
+                for(let i = 0;i<props.messagee.length;i++){
+
+                    lista_mensagens.push({client:props.messagee[i]})
+
+                }
+                
+                for(let i = 0;i<value.message.length;i++){
+
+                    lista_mensagens.push(value.message[i])
+
+                }
+
+
+
+
+                setData(lista_mensagens)
                 update=1
         })
     
@@ -70,7 +103,7 @@ const Chat = (props)=>{
     const renderitem=({item})=>{ //componente responsavel por renderizar a mesagem na tela
 
         let estado = 'flex-start'
-        let color = '#00c2ff'
+        let color = '#fff'
 
         texto = item.client //vai tentar pegar uma mensagem enviada pelo cliente
         estado = 'flex-start'
@@ -79,7 +112,7 @@ const Chat = (props)=>{
  
             texto = item.app // vai tentar pegar uam mensagem enviada pelo atendente ressrce direto do app
             estado = 'flex-end'
-            color = '#fc0335'
+            color = '#fff'
             
         }
         
@@ -88,9 +121,10 @@ const Chat = (props)=>{
 
         return(
             <View style={[style.container_message,{alignItems:estado}]}>
-                <Text style={[style.text_size,{color:color}]}>
-                    {texto}
-                </Text>
+                <View style={[style.container_text]}>
+                    <Text style={[style.text_size,{color:color}]}>{texto}</Text>
+
+                </View>
             </View>
         )
 
@@ -100,7 +134,7 @@ const Chat = (props)=>{
     return(
 
         <View style={[style.container_chat]}>
-            <FlatList data={data} renderItem={renderitem}>
+            <FlatList data={data} renderItem={renderitem} initialScrollIndex={data.length -1}>
             
             </FlatList>
         </View>
@@ -124,9 +158,8 @@ const TextIn = (props)=>{
 
                 const token = await readdata()
 
-                let teste = await api.salvar_msg(token,props.userid,text)
+                await api.salvar_msg(token,props.userid,text)
 
-                console.log(teste)
 
 
             }}>
@@ -173,7 +206,7 @@ const App = ({route,navigation})=>{
 
     return(
         <View style={[style.constainer_principal]}>
-            <Chat userid={userid}></Chat>
+            <Chat userid={userid} messagee = {conversas}></Chat>
             <TextIn userid={userid} ></TextIn>
         </View>
     )

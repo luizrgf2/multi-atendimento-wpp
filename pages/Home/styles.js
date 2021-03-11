@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     item:{
         flexDirection:'row',
         alignItems:'flex-start',
-        backgroundColor:'#606361',
+        backgroundColor:'#010f3e',
         marginTop:y*0.02
     },
     text_item:{
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },container_pricipal:{
 
         flex:1,
-        backgroundColor:'#000',
+        backgroundColor:'#010f3e',
 
 
 

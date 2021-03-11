@@ -7,7 +7,7 @@ const style = StyleSheet.create({
 
     constainer_principal: {
         flex: 1,
-        backgroundColor:'#000',
+        backgroundColor:'#010f3e',
         
     },
     input_modificado:{
@@ -19,11 +19,12 @@ const style = StyleSheet.create({
     },
     container_chat:{
         flex:1,
-        backgroundColor:"#000",
+        backgroundColor:"#010f3e",
         alignItems:'center'
     },
     container_input:{
-        flexDirection:'row'
+        flexDirection:'row',
+        opacity:0.7
     },
     button_image:{
         width:x*0.1,
@@ -34,11 +35,20 @@ const style = StyleSheet.create({
     container_message:{
 
         width:x*0.9,
-        marginTop:y*0.03
+        marginTop:y*0.03,
     },
     text_size:{
         fontWeight:'bold',
-        fontSize:(y-x)*0.08
+        fontSize:(y-x)*0.055,
+        textAlign:'center'
+    },
+    container_text:{
+        width:x*0.5,
+        alignItems:'flex-start',
+        backgroundColor:'#fff',
+        opacity:0.4,
+        borderRadius:7,
+        padding:3,
     }
 
 
