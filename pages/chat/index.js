@@ -5,7 +5,7 @@ const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('rea
 const style = require('./styles').default
 const io = require('socket.io-client')
 const {StackActions} = require('@react-navigation/native')
-const socket = io('http://193.46.199.231:3002',{
+const socket = io('http://34.95.217.130',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -44,7 +44,7 @@ const Chat = (props)=>{
 
 
     socket.on('msg',c=>{ // verifica se a nova mensagens eviadas pelo cliete
-        console.log('oi')
+        console.log(c.userid)
         if(c.userid == props.userid){
 
 
@@ -134,7 +134,7 @@ const Chat = (props)=>{
     return(
 
         <View style={[style.container_chat]}>
-            <FlatList data={data} renderItem={renderitem} initialScrollIndex={data.length -1}>
+            <FlatList data={data} renderItem={renderitem}>
             
             </FlatList>
         </View>

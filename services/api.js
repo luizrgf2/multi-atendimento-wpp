@@ -1,7 +1,7 @@
 const {create} = require('apisauce')
 
 
-var base_url = 'http://193.46.199.231:3002'
+var base_url = 'http://34.95.217.130'
 
 
 async function Register(email,senha,area){
