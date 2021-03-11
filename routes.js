@@ -1,4 +1,5 @@
 const React = require('react')
+const {Text,View,TouchableOpacity} = require('react-native')
 const {NavigationContainer} = require('@react-navigation/native')
 const {createStackNavigator} = require('@react-navigation/stack')
 const Login = require('./pages/login/index').default

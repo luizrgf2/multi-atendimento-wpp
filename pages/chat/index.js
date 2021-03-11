@@ -4,7 +4,8 @@ const React = require('react');
 const {Text,TouchableOpacity,Image,TextInput,FlatList,View,Alert} = require('react-native')
 const style = require('./styles').default
 const io = require('socket.io-client')
-const socket = io('http://c75fc34afabf.ngrok.io',{
+const {StackActions} = require('@react-navigation/native')
+const socket = io('http://d3cfcba8c935.ngrok.io',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
@@ -14,7 +15,12 @@ const api = require('../../services/api')
 
 
 
+function apagar (navigation,userid){
 
+    socket.emit('delete',{userid:userid})
+    navigation.goBack()
+
+}
 
 const readdata = async ()=>{
     try{
@@ -137,7 +143,33 @@ const App = ({route,navigation})=>{
     
     update =0
 
-    navigation.setOptions({title:nome+'-'+red})
+    navigation.setOptions({title:nome+'-'+red, headerRight:()=>{
+
+
+        return(
+            <TouchableOpacity onPress={()=>{
+
+                apagar(navigation,userid)
+
+
+            }
+
+
+
+            }>
+                <View style={{padding:10}}>
+                    <Text>
+                        Apagar
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        )
+
+
+    }})
+
+
+
 
     return(
         <View style={[style.constainer_principal]}>
