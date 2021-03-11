@@ -8,7 +8,7 @@ const api = require('../../services/api')
 const styles = require('./styles').default
 const AsyncStorage = require('@react-native-async-storage/async-storage').default
 const io = require('socket.io-client')
-const socket = io('http://34.95.217.130',{
+const socket = io('http://193.46.199.231:3002',{
     reconnectionDelayMax:10000,
     reconnection:true,
     reconnectionAttempts:Infinity
